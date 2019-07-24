@@ -1,5 +1,5 @@
 <template>
-  <div>123</div>
+  <div class="sider"></div>
 </template>
 
 <script>
@@ -9,4 +9,10 @@ export default {
 </script>
 
 <style scoped>
+.sider {
+  width: 350px;
+  height: 700px;
+  /* border: solid 1px; */
+  float: left;
+}
 </style>
