@@ -9,8 +9,8 @@
         <Input v-model="formItem.password" type="password" />
       </FormItem>
       <FormItem style="text-align: left !important;">
-        <Button class="submit" type="primary" @click="submit()">提交</Button>
-        <Button class="cancel" @click="cancel()">取消</Button>
+        <Button class="submit" type="primary" @click="submit()">确定 ㄟ(≧◇≦)ㄏ</Button>
+        <Button class="cancel" @click="cancel()">取消 ( ´•︵•` )</Button>
       </FormItem>
     </Form>
   </div>
@@ -50,25 +50,26 @@ export default {
         this.formItem.password.length != 0
       ) {
         var _this = this;
-        this.axios
-          .get("http://localhost:3000/login/cellphone", {
-            params: {
-              phone: _this.formItem.phone,
-              password: _this.formItem.password
-            },
-            withCredentials: true
-          })
-          .then(function(response) {
-            _this.$store.commit("change_is_login", true);
-            _this.$store.commit("change_login_window", false);
-          })
-          .catch(function(error) {
-            console.log(error);
+        this.get("/login/cellphone", {
+          phone: _this.formItem.phone,
+          password: _this.formItem.password
+        }).then(function(res) {
+          _this.$store.commit("change_data", {
+            option: "is_login",
+            data: true
           });
+          _this.$store.commit("change_data", {
+            option: "login_window",
+            data: false
+          });
+        });
       }
     },
     cancel() {
-      this.$store.commit("change_login_window", false);
+      this.$store.commit("change_data", {
+        option: "login_window",
+        data: false
+      });
     }
   }
 };
@@ -95,7 +96,7 @@ export default {
   margin-top: 10px;
 }
 .submit {
-  margin-left: 75px;
+  margin-left: -10px;
   margin-top: 20px;
 }
 .cancel {

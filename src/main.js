@@ -3,10 +3,10 @@ import App from './App.vue'
 import store from './store'
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
-import axios from 'axios'
+import { get } from './comdat'
 
 Vue.use(iView)
-Vue.prototype.axios = axios
+Vue.prototype.get = get
 
 Vue.config.productionTip = false
 

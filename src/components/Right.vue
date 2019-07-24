@@ -1,15 +1,15 @@
 <template>
-  <div class="sider"></div>
+  <div class="right"></div>
 </template>
 
 <script>
 export default {
-  name: "sider"
+  name: "right"
 };
 </script>
 
 <style scoped>
-.sider {
+.right {
   width: 350px;
   height: 700px;
   /* border: solid 1px; */

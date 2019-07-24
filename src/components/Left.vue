@@ -1,48 +1,53 @@
 <template>
-  <div class="top">
+  <div class="left">
     <div class="user_info">
       <div class="login" v-show="$store.state.is_login==false">
-        <span class="login_title">还没有登录哦 ...(｡•ˇ‸ˇ•｡) ...</span>
+        <span class="login_title">
+          还没有登录哦
+          <br />...(｡•ˇ‸ˇ•｡) ...
+        </span>
         <Button class="login_button" @click="login()">点我登录 ~\(≥▽≤)/~</Button>
       </div>
       <div class="avatar" v-show="$store.state.is_login">
         <img :src="this.$store.state.user_info.avatar" class="avatar_img" />
+        <span class="avatar_nickname">{{$store.state.user_info.nickname}}</span>
       </div>
     </div>
     <div class="song_list"></div>
-    <div class="song_info"></div>
   </div>
 </template>
 
 <script>
-import { log } from "util";
+import axios from "axios";
 export default {
-  name: "top",
+  name: "left",
   methods: {
     login() {
-      this.$store.commit("change_login_window", true);
+      this.$store.commit("change_data", {
+        option: "login_window",
+        data: true
+      });
     }
   }
 };
 </script>
 
 <style scoped>
-.top {
-  width: 850px;
-  height: 200px;
+.left {
+  width: 200px;
+  height: 700px;
   /* border: solid 1px; */
   float: left;
 }
-.user_info,
-.song_info {
-  width: 250px;
-  height: 200px;
+.user_info {
+  width: 200px;
+  height: 250px;
   border: solid 1px;
   float: left;
 }
 .song_list {
-  width: 350px;
-  height: 200px;
+  width: 200px;
+  height: 450px;
   border: solid 1px;
   float: left;
 }
@@ -57,11 +62,24 @@ export default {
 .login_button {
   margin-top: 30px;
 }
+.avatar {
+  text-align: center;
+  margin: 0 auto;
+}
 .avatar_img {
-  margin-top: 35px;
-  margin-left: 10px;
+  display: block;
+  margin-top: 15px;
+  margin-left: 35px;
   border-radius: 62.5px;
   width: 125px;
   height: 125px;
+}
+.avatar_nickname {
+  display: block;
+  margin-top: 10px;
+  font-size: 25px;
+}
+.signin {
+  margin-top: 10px;
 }
 </style>
