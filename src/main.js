@@ -3,10 +3,11 @@ import App from './App.vue'
 import store from './store'
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
-import { get } from './comdat'
+import { get, commit } from './comdat'
 
 Vue.use(iView)
 Vue.prototype.get = get
+Vue.prototype.commit = commit
 
 Vue.config.productionTip = false
 

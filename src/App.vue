@@ -20,19 +20,37 @@ export default {
   },
   mounted() {
     var _this = this;
+    // 判断cookie是否登录
     if (document.cookie.match("MUSIC_U") != null) {
-      this.$store.commit("change_data", { option: "is_login", data: true });
-      this.get("/login/status").then(function(res) {
-        _this.$store.commit("change_login_status", res.profile);
-        _this.$store.commit("change_data", {
-          option: "get_user_data",
-          data: true
+      (async function() {
+        await _this.commit("is_login", true);
+        await get_login_status();
+        await get_user_playlist();
+        await _this.commit("get_user_data", true);
+      })();
+    } else {
+      this.commit("get_user_data", true);
+    }
+    // 获取用户状态
+    function get_login_status() {
+      return new Promise((resolve, reject) => {
+        _this.get("/login/status").then(function(res) {
+          _this.commit("user_info", res.profile);
+          resolve(true);
         });
       });
-    } else {
-      this.$store.commit("change_data", {
-        option: "get_user_data",
-        data: true
+    }
+    // 获取用户歌单
+    function get_user_playlist() {
+      return new Promise((resolve, reject) => {
+        _this
+          .get("/user/playlist", {
+            uid: _this.$store.state.user_info.userId
+          })
+          .then(function(res) {
+            _this.commit("playlist", res.playlist);
+            resolve(true);
+          });
       });
     }
   }
@@ -44,9 +62,9 @@ export default {
   width: 1200px;
   height: 700px;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
-  border-color: #eee;
   border-radius: 5px;
   margin: 40px auto;
   padding: 0;
+  font-weight: bold;
 }
 </style>

@@ -54,22 +54,13 @@ export default {
           phone: _this.formItem.phone,
           password: _this.formItem.password
         }).then(function(res) {
-          _this.$store.commit("change_data", {
-            option: "is_login",
-            data: true
-          });
-          _this.$store.commit("change_data", {
-            option: "login_window",
-            data: false
-          });
+          _this.commit("is_login", true);
+          _this.commit("login_window", false);
         });
       }
     },
     cancel() {
-      this.$store.commit("change_data", {
-        option: "login_window",
-        data: false
-      });
+      this.commit("login_window", false);
     }
   }
 };
