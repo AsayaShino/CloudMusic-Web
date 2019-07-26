@@ -3,11 +3,12 @@ import App from './App.vue'
 import store from './store'
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
-import { get, commit } from './comdat'
+import { post, commit, timestamp } from './comdat'
 
 Vue.use(iView)
-Vue.prototype.get = get
+Vue.prototype.post = post
 Vue.prototype.commit = commit
+Vue.prototype.timestamp = timestamp()
 
 Vue.config.productionTip = false
 

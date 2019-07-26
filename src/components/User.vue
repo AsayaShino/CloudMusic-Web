@@ -1,5 +1,5 @@
 <template>
-  <div class="left">
+  <div class="user">
     <div class="user_info">
       <div class="login" v-show="$store.state.is_login==false">
         <span class="login_title">
@@ -15,22 +15,50 @@
     </div>
     <div class="song_list">
       <div class="create_list">
-        <img src="@/assets/yinle.png" width="18" style="position: relative; left: -4px; top: 1px;" />
+        <img
+          src="@/assets/icon/yinle.png"
+          width="18"
+          style="position: relative; left: -4px; top: 1px;"
+        />
         <span style="position: relative; left: 0px; top: -2px;">歌单列表</span>
       </div>
       <div class="list">
         <div
           class="song_list_card"
           v-for="(item, index) in this.$store.state.playlist"
+          v-show="11 * (page - 1) <= index && index < 11 * page"
           :key="index"
+          @click="change_list(item)"
         >
           <img
-            src="@/assets/liebiao.png"
+            src="@/assets/icon/liebiao.png"
             width="18"
             style="position: relative; left: -5px; top: 8px; float: left;"
           />
           <span class="list_name">{{item.name}}</span>
         </div>
+      </div>
+      <div class="page">
+        <img
+          src="@/assets/icon/paging_left.png"
+          width="15"
+          style="float: left; display:block; margin-left: 15px; margin-top: 4px;"
+          @click="change_page_icon('left')"
+        />
+        <div class="page_number">
+          <span
+            class="number"
+            v-for="(item, index) in pageCount"
+            :key="index"
+            @click="change_page(item)"
+          >{{item}}</span>
+        </div>
+        <img
+          src="@/assets/icon/paging_right.png"
+          width="15"
+          style="float: right; display:block; margin-right: 15px; margin-top: 4px;"
+          @click="change_page_icon('right')"
+        />
       </div>
     </div>
   </div>
@@ -38,12 +66,57 @@
 
 <script>
 export default {
-  name: "left",
+  name: "user",
+  data() {
+    return {
+      page: 1,
+      pageCount: 1
+    };
+  },
   methods: {
     login() {
       this.$store.commit("change_data", {
         option: "login_window",
         data: true
+      });
+    },
+    change_page(item) {
+      this.page = item;
+    },
+    change_page_icon(value) {
+      if (value == "left") {
+        if (this.page - 1 > 0) {
+          this.page = this.page - 1;
+        }
+      } else {
+        if (this.page + 1 <= this.pageCount) {
+          this.page = this.page + 1;
+        }
+      }
+    },
+    change_list(item) {
+      var _this = this;
+      this.post("/playlist/detail", {
+        id: item.id
+      }).then(function(res) {
+        _this.commit("playlist_info", res.playlist);
+      });
+    }
+  },
+  mounted() {
+    var _this = this;
+    if (this.$store.state.is_login) {
+      // 获取用户状态
+      this.post("/login/status").then(function(res) {
+        _this.commit("user_info", res.profile);
+      });
+      // 获取用户歌单
+      this.post("/user/playlist", {
+        uid: _this.$store.state.user_info.userId
+      }).then(function(res) {
+        _this.commit("playlist", res.playlist);
+        let length = _this.$store.state.playlist.length;
+        _this.pageCount = Math.ceil(length / 11);
       });
     }
   }
@@ -51,12 +124,11 @@ export default {
 </script>
 
 <style scoped>
-.left {
+.user {
   width: 200px;
   height: 700px;
   border-right: 1px solid #e8eaec;
   float: left;
-  overflow: hidden;
 }
 .user_info {
   width: 200px;
@@ -111,20 +183,25 @@ export default {
 .list {
   margin-top: 10px;
   width: 200px;
-  height: 425px;
-  overflow: scroll;
+  height: 385px;
+  overflow: hidden;
+  /* border: solid 1px; */
 }
 .song_list {
   user-select: none;
+  height: 450px;
 }
 .song_list_card {
-  width: 185px;
+  width: 200px;
   height: 35px;
   font-size: 14px;
   padding-left: 15px;
   border-bottom: 1px solid #e8eaec;
 }
-.song_list_card:nth-child(1) {
+.song_list_card:first-child {
+  border-top: 1px solid #e8eaec;
+}
+.song_list_card:last-child {
   border-top: 1px solid #e8eaec;
 }
 .song_list:hover {
@@ -144,5 +221,22 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: clip;
+}
+.page img:hover {
+  cursor: pointer;
+}
+.page_number {
+  float: left;
+  width: 140px;
+  text-align: center;
+}
+.number {
+  font-size: 14px;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+.number:hover {
+  cursor: pointer;
+  color: lightcoral;
 }
 </style>

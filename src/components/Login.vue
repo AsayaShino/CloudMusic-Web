@@ -50,12 +50,15 @@ export default {
         this.formItem.password.length != 0
       ) {
         var _this = this;
-        this.get("/login/cellphone", {
+        this.post("/login/cellphone", {
           phone: _this.formItem.phone,
           password: _this.formItem.password
         }).then(function(res) {
-          _this.commit("is_login", true);
+          _this.commit("user_info", res.profile);
+          _this.commit("user_id", res.profile.userId);
           _this.commit("login_window", false);
+          _this.commit("is_login", true);
+          window.location.reload();
         });
       }
     },

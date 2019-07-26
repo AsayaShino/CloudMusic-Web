@@ -1,5 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import VuexPersistence from 'vuex-persist'
+
+const vuexLocal = new VuexPersistence({
+  storage: window.localStorage
+})
 
 Vue.use(Vuex)
 
@@ -9,12 +14,14 @@ export default new Vuex.Store({
     is_login: false,
     // 登录窗口
     login_window: false,
-    // 第一次打开获取数据，获取到显示画面，防止头像闪屏
-    get_user_data: false,
+    // 用户ID
+    user_id: 0,
     // 用户个人信息
     user_info: {},
+    // 歌单列表
+    playlist: {},
     // 歌单信息
-    playlist: {}
+    playlist_info: {}
   },
   mutations: {
     // 通用更改选项
@@ -22,7 +29,5 @@ export default new Vuex.Store({
       state[value.option] = value.data;
     }
   },
-  actions: {
-
-  }
+  plugins: [vuexLocal.plugin]
 })

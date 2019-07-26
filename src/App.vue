@@ -1,58 +1,25 @@
 <template>
-  <div id="app" v-show="$store.state.get_user_data">
-    <Left></Left>
+  <div id="app">
+    <User></User>
     <Login v-show="$store.state.login_window"></Login>
-    <Right></Right>
+    <Song-List></Song-List>
+    <Lrc></Lrc>
   </div>
 </template>
 
 <script>
-import Left from "./components/Left.vue";
+import User from "./components/User.vue";
 import Login from "./components/Login.vue";
-import Right from "./components/Right.vue";
+import SongList from "./components/SongList.vue";
+import Lrc from "./components/Lrc.vue";
 
 export default {
   name: "app",
   components: {
-    Left,
+    User,
     Login,
-    Right
-  },
-  mounted() {
-    var _this = this;
-    // 判断cookie是否登录
-    if (document.cookie.match("MUSIC_U") != null) {
-      (async function() {
-        await _this.commit("is_login", true);
-        await get_login_status();
-        await get_user_playlist();
-        await _this.commit("get_user_data", true);
-      })();
-    } else {
-      this.commit("get_user_data", true);
-    }
-    // 获取用户状态
-    function get_login_status() {
-      return new Promise((resolve, reject) => {
-        _this.get("/login/status").then(function(res) {
-          _this.commit("user_info", res.profile);
-          resolve(true);
-        });
-      });
-    }
-    // 获取用户歌单
-    function get_user_playlist() {
-      return new Promise((resolve, reject) => {
-        _this
-          .get("/user/playlist", {
-            uid: _this.$store.state.user_info.userId
-          })
-          .then(function(res) {
-            _this.commit("playlist", res.playlist);
-            resolve(true);
-          });
-      });
-    }
+    SongList,
+    Lrc
   }
 };
 </script>
@@ -66,5 +33,6 @@ export default {
   margin: 40px auto;
   padding: 0;
   font-weight: bold;
+  color: #545454;
 }
 </style>
