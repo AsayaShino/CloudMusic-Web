@@ -12,7 +12,8 @@ export default {
 .lrc {
   width: 350px;
   height: 700px;
-  /* border: solid 1px; */
+  border: solid 1px;
   float: left;
+  margin-top: -625px;
 }
 </style>

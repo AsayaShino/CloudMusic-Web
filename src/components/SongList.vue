@@ -49,8 +49,9 @@
           class="song"
           v-for="(item, index) in this.$store.state.playlist_info.tracks"
           :key="index"
+          @click="song(item.id)"
         >
-          <div style="margin-left:15px; float:left;">{{index+1}}</div>
+          <div style="margin-left:15px; float:left; width: 15px;">{{index+1}}</div>
           <div class="song_name" style="margin-left: 15px; float:left;">
             <span>{{item.name}}</span>
             <span
@@ -126,6 +127,17 @@ export default {
         }
       }
       return item2;
+    },
+    song(item) {
+      var _this = this;
+      this.post("/song/url", {
+        id: item
+      }).then(function(res) {
+        _this.commit("music", res.data[0]);
+      });
+      this.post("/song/detail?ids=" + item, {}).then(function(res) {
+        _this.commit("music_info", res.songs[0]);
+      });
     }
   }
 };
@@ -168,16 +180,16 @@ export default {
 .song_info {
   width: 650px;
   height: 475px;
-}
-.song_info:hover {
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
+  overflow: scroll;
+  overflow-x: hidden;
 }
 .nav {
-  width: 650px;
+  width: 635px;
   height: 40px;
   font-size: 16px;
   border-bottom: 1px solid #e8eaec;
+  position: fixed;
+  background: #ffffff;
 }
 .song_list1 {
   width: 650px;
@@ -190,6 +202,15 @@ export default {
 }
 .song:nth-child(2n) {
   background: #fafafa;
+}
+.song:first-child {
+  margin-top: 40px;
+}
+.song:hover {
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  cursor: pointer;
+  color: tomato;
 }
 .song_name {
   width: 365px;

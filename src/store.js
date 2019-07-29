@@ -21,13 +21,19 @@ export default new Vuex.Store({
     // 歌单列表
     playlist: {},
     // 歌单信息
-    playlist_info: {}
+    playlist_info: {},
+    // 音乐信息
+    music: {},
+    // 音乐封面
+    music_info: {},
+    // 是否播放
+    on_play: false
   },
   mutations: {
     // 通用更改选项
     change_data(state, value) {
       state[value.option] = value.data;
-    }
+    },
   },
   plugins: [vuexLocal.plugin]
 })

@@ -3,6 +3,7 @@
     <User></User>
     <Login v-show="$store.state.login_window"></Login>
     <Song-List></Song-List>
+    <Control></Control>
     <Lrc></Lrc>
   </div>
 </template>
@@ -11,6 +12,7 @@
 import User from "./components/User.vue";
 import Login from "./components/Login.vue";
 import SongList from "./components/SongList.vue";
+import Control from "./components/Control.vue";
 import Lrc from "./components/Lrc.vue";
 
 export default {
@@ -19,6 +21,7 @@ export default {
     User,
     Login,
     SongList,
+    Control,
     Lrc
   }
 };
