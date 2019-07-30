@@ -63,11 +63,14 @@ export default {
     var time = document.querySelector("#audio");
     var _this = this;
     time.addEventListener("timeupdate", function() {
-      var times = time.currentTime;
-      _this.now = _this.time(parseInt(times * 1000));
+      var times = parseInt(time.currentTime);
+      _this.now = _this.time(times * 1000);
       _this.percent = parseInt(
         ((times * 1000) / _this.$store.state.music_info.dt) * 100
       );
+      if (_this.$store.state.time < times) {
+        _this.commit("time", times);
+      }
     });
   },
   watch: {
@@ -85,7 +88,7 @@ export default {
 .control {
   width: 650px;
   height: 75px;
-  /* border: solid 1px; */
+  border-right: 1px solid #e8eaec;
   float: left;
 }
 .song {
@@ -95,7 +98,7 @@ export default {
   float: left;
 }
 .control_icon {
-  width: 300px;
+  width: 299px;
   height: 60px;
   /* border: solid 1px; */
   float: left;

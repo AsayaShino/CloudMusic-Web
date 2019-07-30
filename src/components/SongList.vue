@@ -134,6 +134,7 @@ export default {
         id: item
       }).then(function(res) {
         _this.commit("music", res.data[0]);
+        _this.now_lrc = 0;
       });
       this.post("/song/detail?ids=" + item, {}).then(function(res) {
         _this.commit("music_info", res.songs[0]);

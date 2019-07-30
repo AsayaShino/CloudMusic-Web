@@ -27,7 +27,11 @@ export default new Vuex.Store({
     // 音乐封面
     music_info: {},
     // 是否播放
-    on_play: false
+    on_play: false,
+    // 歌词
+    lrc: "",
+    // 时间
+    time: ""
   },
   mutations: {
     // 通用更改选项
